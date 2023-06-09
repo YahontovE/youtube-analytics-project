@@ -1,4 +1,6 @@
 import os
+import pickle
+
 from googleapiclient.discovery import build
 import isodate
 import json
@@ -29,18 +31,15 @@ class Channel:
     def get_service(cls):
         return cls.youtube
 
-    def to_json(self,path):
+    def to_json(self, path):
         with open(path, 'w', encoding='utf-8') as file:
-            file.writelines(f'Информация о канале:\nНазвание {self.title}\nКол-во видео {self.video_count}\n'
-                            f'URL {self.url}\nОписание {self.description}\nКол-во подписчиков {self.subscriber_count}\n'
-                            f'Кол-во просмотров {self.view_count}')
+            data = dict(title=self.title, video_count=self.video_count,
+                        URL=self.url, description=self.description,
+                        subscriber_count=self.subscriber_count,
+                        view_count=self.view_count)
+            json.dump(data, file, indent=2)
             return file
 
     @property
     def channel_id(self):
         return self.__channel_id
-
-
-
-
-
