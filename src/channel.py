@@ -56,6 +56,7 @@ class Channel:
         return cls.youtube
 
     def to_json(self, path):
+        '''Создает файл с указанным названием и помещает в него славарь с данными о канале'''
         with open(path, 'w', encoding='utf-8') as file:
             data = dict(title=self.title, video_count=self.video_count,
                         URL=self.url, description=self.description,
