@@ -37,7 +37,7 @@ class Channel:
                         URL=self.url, description=self.description,
                         subscriber_count=self.subscriber_count,
                         view_count=self.view_count)
-            json.dump(data, file, indent=2)
+            json.dump(data, file, indent=2,ensure_ascii=False)
             return file
 
     @property
