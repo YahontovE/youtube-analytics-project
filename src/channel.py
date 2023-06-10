@@ -1,8 +1,5 @@
 import os
-import pickle
-
 from googleapiclient.discovery import build
-import isodate
 import json
 
 
@@ -22,6 +19,33 @@ class Channel:
         self.subscriber_count = get_channel['items'][0]['statistics']['subscriberCount']
         self.view_count = get_channel['items'][0]['statistics']['viewCount']
 
+    def __str__(self):
+        return f'{self.title} ({self.url})'
+
+    def __add__(self, other):
+        '''метод для операции сложения'''
+        return int(self.subscriber_count) + int(other.subscriber_count)
+
+    def __sub__(self, other):
+        '''метод для операции вычитания'''
+        return int(self.subscriber_count) - int(other.subscriber_count)
+
+    def __gt__(self, other):
+        '''метод для операции сравнения «больше»'''
+        return int(self.subscriber_count) > int(other.subscriber_count)
+
+    def __lt__(self, other):
+        '''метод для операции сравнения «меньше»'''
+        return int(self.subscriber_count) < int(other.subscriber_count)
+
+    def __le__(self, other):
+        '''метод для операции сравнения «меньше или равно»'''
+        return int(self.subscriber_count) <= int(other.subscriber_count)
+
+    def __ge__(self, other):
+        '''метод для операции сравнения «больше или равно»'''
+        return int(self.subscriber_count) >= int(other.subscriber_count)
+
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале."""
         channel = self.youtube.channels().list(id=self.__channel_id, part='snippet,statistics').execute()
@@ -37,7 +61,7 @@ class Channel:
                         URL=self.url, description=self.description,
                         subscriber_count=self.subscriber_count,
                         view_count=self.view_count)
-            json.dump(data, file, indent=2,ensure_ascii=False)
+            json.dump(data, file, indent=2, ensure_ascii=False)
             return file
 
     @property
