@@ -10,13 +10,25 @@ class Video:
     def __init__(self, video_id):
         video_response = self.youtube.videos().list(part='snippet,statistics', id=video_id).execute()
         self.video_id = video_id
-        self.video_title = video_response['items'][0]['snippet']['title']
-        self.video_url = f"https://www.youtube.com/video/{video_response['items'][0]['id']}"
-        self.video_viewCount = video_response['items'][0]['statistics']['viewCount']
-        self.video_likeCount = video_response['items'][0]['statistics']['likeCount']
+        try:
+            self.title = video_response['items'][0]['snippet']['title']
+        except IndexError:
+            self.title = None
+        try:
+            self.video_url = f"https://www.youtube.com/video/{video_response['items'][0]['id']}"
+        except IndexError:
+            self.video_url = None
+        try:
+            self.viewCount = video_response['items'][0]['statistics']['viewCount']
+        except IndexError:
+            self.viewCount = None
+        try:
+            self.like_count = video_response['items'][0]['statistics']['likeCount']
+        except IndexError:
+            self.like_count = None
 
     def __str__(self):
-        return f'{self.video_title}'
+        return f'{self.title}'
 
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале."""
